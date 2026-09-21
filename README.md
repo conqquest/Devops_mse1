@@ -1,344 +1,539 @@
-#  VibePass — Concert & Music Festival Ticket Platform
+# VibePass — Concert & Music Festival Ticket Platform
 
-> A full-stack concert discovery and ticket booking prototype, built as the application workload for a **Multi-Environment AWS Provisioning** university MSE project using Terraform.
+VibePass is a concert and music festival ticket platform developed as an MSE/DevOps project. The project combines a React frontend, Node.js backend, Docker containerization, and AWS infrastructure provisioned using Terraform.
 
----
-
-## 📋 Problem Statement
-
-Universities and organizations need real-world application workloads to demonstrate multi-environment cloud infrastructure provisioning. Existing demo applications are often too simplistic or not representative of production systems.
-
-## 💡 Solution
-
-**VibePass** is a production-quality concert and music festival ticket platform prototype that serves as the application layer for a Terraform-managed AWS infrastructure project. It provides:
-
-- A visually impressive frontend that mimics a real ticketing platform
-- A clean REST API backend designed for cloud deployment
-- Multi-environment awareness (Dev/Prod) tied to Terraform workspaces
-- Infrastructure monitoring dashboard for DevOps visibility
+The main focus of the project is **multi-environment infrastructure provisioning using Terraform**.
 
 ---
 
-## ✨ Features
+## Project Overview
 
-### User-Facing
-- 🎪 **Event Discovery** — Browse upcoming concerts and festivals
-- 🎤 **Artist Profiles** — Explore performing artists and their events
-- 🎫 **Ticket Selection** — Choose from multiple ticket tiers (GA, VIP, 3-Day, Premium)
-- 🛒 **Shopping Cart** — Add tickets, manage quantities, persistent across navigation
-- 💳 **Demo Checkout** — Complete prototype bookings without real payment
-- ✅ **Booking Confirmation** — View and download mock tickets
-- ⏰ **Live Countdown** — Real-time countdown to the featured festival
-- 📸 **Event Gallery** — Visual gallery with lightbox viewer
-- 📰 **Newsletter** — Subscribe to event updates
-- 🔍 **Search & Filter** — Find events by name, genre, city, date
+The application is divided into three main parts:
 
-### Infrastructure (MSE/DevOps)
-- 🏗️ **Infrastructure Dashboard** — View Dev/Prod environment status
-- 🔄 **Terraform Integration** — Ready for validate/test/plan/apply operations
-- 📊 **Resource Monitoring** — EC2, VPC, Subnet visibility per environment
-- 🔒 **Security** — CORS, input validation, no exposed secrets
-
----
-
-## 🏗 Architecture
-
+```text
+vibepass/
+├── frontend/
+├── backend/
+└── terraform/
 ```
-User
- ↓
-VibePass React Frontend (Vite + TypeScript + Tailwind)
- ↓
-Express REST API (TypeScript)
- ↓
-Application Services
- ↓
-Terraform Service (Abstraction Layer)
- ↓
-AWS Infrastructure
- ↓
-DEV / PROD Environments
-```
-
----
-
-## 🛠 Tech Stack
 
 ### Frontend
-| Technology | Purpose |
-|-----------|---------|
-| React 18 | UI framework |
-| TypeScript | Type safety |
-| Vite | Build tool & dev server |
-| Tailwind CSS | Utility-first styling |
-| React Router v6 | Client-side routing |
-| Axios | HTTP client |
-| Lucide React | Icon library |
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* Axios
+* React Router
 
 ### Backend
-| Technology | Purpose |
-|-----------|---------|
-| Node.js | Runtime |
-| Express | Web framework |
-| TypeScript | Type safety |
-| CORS | Cross-origin requests |
-| dotenv | Environment config |
-| uuid | Booking ID generation |
+
+* Node.js
+* Express
+* TypeScript
+* REST API
+
+### Infrastructure
+
+* AWS
+* Terraform
+* Amazon EC2
+* Amazon VPC
+* Amazon RDS PostgreSQL
+* Amazon CloudWatch
+* Security Groups
+* Docker
 
 ---
 
-## 📁 Folder Structure
+# Terraform Infrastructure
 
-```
-vibepass/
-│
-├── frontend/                    # React + Vite frontend
-│   ├── public/
-│   │   └── images/             # Event & gallery images
-│   ├── src/
-│   │   ├── components/         # Reusable UI components
-│   │   ├── context/            # React Context (Cart)
-│   │   ├── pages/              # Page components
-│   │   ├── services/           # API service layer
-│   │   ├── types/              # TypeScript interfaces
-│   │   ├── App.tsx             # Router & app shell
-│   │   ├── main.tsx            # Entry point
-│   │   └── index.css           # Global styles & design system
-│   ├── .env.example
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vite.config.ts
-│
-├── backend/                     # Express + TypeScript API
-│   ├── src/
-│   │   ├── controllers/        # Request handlers
-│   │   ├── data/               # Mock data (events, artists, tickets)
-│   │   ├── middleware/         # Error handling, logging, validation
-│   │   ├── routes/             # Route definitions
-│   │   ├── services/           # Business logic layer
-│   │   ├── types/              # TypeScript interfaces
-│   │   ├── utils/              # Helper functions
-│   │   ├── app.ts              # Express app configuration
-│   │   └── server.ts           # Server startup
-│   ├── .env.example
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── nodemon.json
-│
-├── .gitignore
-└── README.md
-```
+Terraform is used as Infrastructure as Code (IaC) for provisioning the AWS infrastructure.
 
----
+Instead of manually creating AWS resources through the AWS Console, the infrastructure is defined using Terraform configuration files.
 
-## 🚀 Getting Started
+The Terraform configuration creates and manages:
 
-### Prerequisites
-- Node.js 18+
-- npm 9+
+* VPC
+* Public subnet
+* Private subnets
+* Internet Gateway
+* Route tables
+* Security Groups
+* EC2 instances
+* RDS PostgreSQL
+* CloudWatch Log Group
+* Terraform outputs
+* Infrastructure tests
 
-### Backend Setup
+The configuration is divided into separate files so that each part of the infrastructure can be managed independently.
 
-```bash
-cd backend
-cp .env.example .env
-npm install
-npm run dev
-```
-
-The API server starts at `http://localhost:5000`.
-
-### Frontend Setup
-
-```bash
-cd frontend
-cp .env.example .env
-npm install
-npm run dev
-```
-
-The frontend starts at `http://localhost:3000`.
-
----
-
-## 🔐 Environment Variables
-
-### Frontend (`frontend/.env`)
-
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
-### Backend (`backend/.env`)
-
-```env
-PORT=5000
-TERRAFORM_DIR=../terraform
-AWS_REGION=ap-south-1
-NODE_ENV=development
-```
-
-> ⚠️ **Security**: Never expose AWS credentials to the frontend. All infrastructure operations go through the backend's Terraform Service.
-
----
-
-## 📡 API Documentation
-
-### Health Check
-```
-GET /api/health
-→ { success: true, status: "ok", service: "vibepass-api" }
-```
-
-### Events
-```
-GET /api/events                    # List all events
-GET /api/events?search=rock        # Search events
-GET /api/events?genre=Electronic   # Filter by genre
-GET /api/events?city=Mumbai        # Filter by city
-GET /api/events?sort=price         # Sort (date|price|popularity)
-GET /api/events/:id                # Get event details
-GET /api/events/:id/lineup         # Get event lineup
-GET /api/events/:id/tickets        # Get event tickets
-GET /api/events/:id/gallery        # Get event gallery
-```
-
-### Artists
-```
-GET /api/artists                   # List all artists
-GET /api/artists/:id               # Get artist details
-GET /api/artists/:id/events        # Get artist's events
-```
-
-### Bookings
-```
-POST /api/bookings                 # Create demo booking
-GET /api/bookings/:id              # Get booking details
-```
-
-**Create Booking Request:**
-```json
-{
-  "eventId": "evt-001",
-  "ticketType": "tkt-001-general",
-  "quantity": 2,
-  "customer": {
-    "name": "Demo User",
-    "email": "demo@example.com",
-    "phone": "9999999999"
-  }
-}
-```
-
-### Newsletter
-```
-POST /api/newsletter/subscribe     # Subscribe to newsletter
-```
-
-### Terraform (Infrastructure)
-```
-GET  /api/terraform/environments              # List environments
-GET  /api/terraform/environments/:env/status   # Environment status
-POST /api/terraform/environments/:env/validate # Validate config
-POST /api/terraform/environments/:env/test     # Run tests
-POST /api/terraform/environments/:env/plan     # Generate plan
-POST /api/terraform/environments/:env/apply    # Apply changes
-```
-
-### Response Format
-
-**Success:**
-```json
-{
-  "success": true,
-  "data": { ... }
-}
-```
-
-**Error:**
-```json
-{
-  "success": false,
-  "message": "Event not found"
-}
-```
-
----
-
-## 🔧 Terraform Integration
-
-The backend includes a `TerraformService` abstraction designed to integrate with a separate Terraform directory:
-
-```
+```text
 terraform/
-├── main.tf
+├── terraform.tf
+├── provider.tf
 ├── variables.tf
+├── locals.tf
+├── main.tf
+├── networking.tf
+├── security.tf
+├── compute.tf
+├── database.tf
+├── monitoring.tf
 ├── outputs.tf
 ├── terraform.tfvars.dev
-└── terraform.tfvars.prod
+├── terraform.tfvars.prod
+└── tests/
+    └── infrastructure.tftest.hcl
 ```
 
-### Operations Supported
-| Operation | Command | Description |
-|-----------|---------|-------------|
-| Validate | `terraform validate` | Validate configuration syntax |
-| Test | `terraform test` | Run Terraform tests |
-| Plan | `terraform plan` | Preview infrastructure changes |
-| Apply | `terraform apply` | Apply infrastructure changes |
+---
 
-### Environment Mapping
-| Environment | Workspace | Terraform Vars |
-|------------|-----------|----------------|
-| DEV | `dev` | `terraform.tfvars.dev` |
-| PROD | `prod` | `terraform.tfvars.prod` |
+# Terraform Workspaces
 
-> 📝 In the current prototype, Terraform operations return `"Terraform service is not configured"`. Connect the actual Terraform directory to enable real operations.
+Terraform Workspaces are used to manage separate environments using the same Terraform configuration.
+
+The project uses:
+
+```text
+dev
+prod
+```
+
+Each workspace has its own Terraform state.
+
+This means that the development infrastructure and production infrastructure are tracked separately even though they use the same Terraform code.
+
+For example:
+
+```bash
+terraform workspace select dev
+```
+
+selects the development environment.
+
+```bash
+terraform workspace select prod
+```
+
+selects the production environment.
+
+The current workspace can be checked using:
+
+```bash
+terraform workspace show
+```
+
+Available workspaces can be viewed using:
+
+```bash
+terraform workspace list
+```
 
 ---
 
-## ⚖️ Dev vs Prod
+# How Dev and Prod Work
 
-| Resource | DEV | PROD |
-|----------|-----|------|
-| EC2 Instances | 1 | 3 |
-| Instance Type | t3.micro | t3.small |
-| Storage | 8 GB | 20 GB |
-| Monitoring | Basic | Enhanced |
-| AWS Region | ap-south-1 | ap-south-1 |
+The Terraform code is shared between environments. Environment-specific settings are provided through separate variable files.
+
+### Development
+
+```text
+terraform.tfvars.dev
+
+EC2 Instance Type: t3.micro
+EC2 Instance Count: 1
+Root Volume: 8 GB
+Monitoring: Disabled
+VPC: 10.10.0.0/16
+```
+
+### Production
+
+```text
+terraform.tfvars.prod
+
+EC2 Instance Type: t3.small
+EC2 Instance Count: 3
+Root Volume: 20 GB
+Monitoring: Enabled
+VPC: 10.20.0.0/16
+```
+
+The same Terraform resources can therefore create different infrastructure depending on the selected environment and variable file.
+
+Example:
+
+```bash
+terraform workspace select dev
+terraform plan -var-file="terraform.tfvars.dev"
+```
+
+For production:
+
+```bash
+terraform workspace select prod
+terraform plan -var-file="terraform.tfvars.prod"
+```
+
+The workspace controls the Terraform state, while the `.tfvars` file provides the environment-specific configuration.
 
 ---
 
-## ⚠️ Prototype Limitations
+# Terraform Workflow
 
-This is a **prototype** application. The following are intentionally simplified:
+The project follows the normal Terraform workflow.
 
-- ❌ No real payment gateway integration
-- ❌ No real authentication/authorization
-- ❌ No real database (uses in-memory mock data)
-- ❌ No real ticket inventory synchronization
-- ❌ No email delivery for bookings
-- ❌ Bookings reset on server restart
-- ❌ Terraform operations not connected (returns "not configured")
+### 1. Initialize
+
+```bash
+terraform init
+```
+
+Downloads the required providers and initializes the Terraform working directory.
+
+### 2. Format
+
+```bash
+terraform fmt
+```
+
+Formats Terraform configuration files.
+
+### 3. Validate
+
+```bash
+terraform validate
+```
+
+Checks whether the Terraform configuration is valid.
+
+### 4. Test
+
+```bash
+terraform test
+```
+
+Runs the Terraform infrastructure tests.
+
+### 5. Plan
+
+Development:
+
+```bash
+terraform plan -var-file="terraform.tfvars.dev"
+```
+
+Production:
+
+```bash
+terraform plan -var-file="terraform.tfvars.prod"
+```
+
+`terraform plan` shows what Terraform intends to create, modify or destroy before making changes.
+
+### 6. Apply
+
+Development:
+
+```bash
+terraform apply -var-file="terraform.tfvars.dev"
+```
+
+Production:
+
+```bash
+terraform apply -var-file="terraform.tfvars.prod"
+```
+
+`terraform apply` creates or modifies the AWS infrastructure.
+
+### 7. Outputs
+
+```bash
+terraform output
+```
+
+Displays useful information such as VPC IDs, subnet IDs, EC2 information and the RDS endpoint.
 
 ---
 
-## 🔮 Future Improvements
+# AWS Architecture
 
-1. **Database Integration** — PostgreSQL/DynamoDB for persistent data
-2. **Authentication** — AWS Cognito or Auth0
-3. **Payment Gateway** — Razorpay/Stripe integration
-4. **Real Terraform Execution** — Connect to actual AWS provisioning
-5. **CI/CD Pipeline** — GitHub Actions for automated deployment
-6. **Monitoring** — CloudWatch integration
-7. **CDN** — CloudFront for static assets
-8. **Containerization** — Docker for consistent deployments
-9. **Load Testing** — Verify infrastructure scaling
+The Terraform infrastructure is designed around an AWS VPC.
+
+```text
+                    Internet
+                       |
+                 Internet Gateway
+                       |
+                  Public Subnet
+                       |
+                  EC2 Instances
+                       |
+                Private Subnets
+                       |
+                 RDS PostgreSQL
+```
+
+The production environment contains multiple EC2 instances and multiple private subnets.
+
+The RDS database is placed in private networking and is not publicly accessible.
 
 ---
 
-## 📄 License
+# AWS Resources
 
-This project is part of a university MSE (Multi-Environment AWS Provisioning) assignment. For academic use only.
+## VPC
+
+Separate CIDR ranges are used for different environments.
+
+```text
+Development: 10.10.0.0/16
+Production:  10.20.0.0/16
+```
+
+## Subnets
+
+The infrastructure contains public and private subnets.
+
+A secondary private subnet is also used in another Availability Zone so that the RDS DB subnet group covers multiple Availability Zones.
+
+## EC2
+
+Development:
+
+```text
+1 × t3.micro
+```
+
+Production:
+
+```text
+3 × t3.small
+```
+
+The EC2 instances use Amazon Linux and encrypted GP3 root volumes.
+
+## RDS
+
+The database uses:
+
+```text
+PostgreSQL 17
+db.t3.micro
+Encrypted storage
+Private access
+```
+
+The database security group allows PostgreSQL traffic from the application security group.
+
+## CloudWatch
+
+CloudWatch resources are provisioned through Terraform.
+
+Monitoring is enabled for the production environment and disabled for development.
 
 ---
 
-**Built with ❤️ for the VibePass experience.**
+# Docker
+
+The frontend and backend are containerized using Docker.
+
+### Frontend
+
+The frontend is built using Vite and served through an Nginx container.
+
+```text
+React
+  ↓
+Vite Build
+  ↓
+Nginx Docker Container
+  ↓
+Port 80
+```
+
+### Backend
+
+The backend is built using Node.js and Express.
+
+```text
+Node.js / Express
+        ↓
+Docker Container
+        ↓
+Port 5000
+```
+
+Docker allows the application to be packaged consistently before deployment to AWS.
+
+---
+
+# Future AWS Deployment
+
+The next deployment stage can use Amazon ECR for storing the Docker images.
+
+```text
+Frontend / Backend
+       ↓
+   Docker Build
+       ↓
+  Amazon ECR
+       ↓
+      EC2
+       ↓
+ VibePass Application
+```
+
+An Application Load Balancer can also be added later to distribute traffic between multiple EC2 instances.
+
+---
+
+# Terraform Data Sources
+
+The project uses Terraform data sources to retrieve AWS information dynamically.
+
+Examples include:
+
+```text
+aws_availability_zones.available
+aws_caller_identity.current
+aws_region.current
+aws_ami.amazon_linux
+```
+
+This avoids hardcoding values such as the Amazon Linux AMI ID.
+
+---
+
+# Terraform Testing
+
+Terraform infrastructure tests are stored at:
+
+```text
+terraform/tests/infrastructure.tftest.hcl
+```
+
+The tests verify important environment-specific configurations such as:
+
+```text
+Development:
+t3.micro
+1 instance
+
+Production:
+t3.small
+3 instances
+Monitoring enabled
+```
+
+---
+
+# Git Development Checkpoints
+
+The project is developed through separate Git checkpoints.
+
+```text
+01 — Frontend
+02 — Backend
+03 — Terraform Foundation
+04 — Terraform Data Sources
+05 — Terraform Networking
+06 — Terraform Security
+07 — Terraform Compute
+08 — Terraform Database
+09 — Terraform Monitoring
+10 — Terraform Outputs
+11 — Terraform Tests
+12 — Docker
+13 — ECR
+14 — AWS Deployment
+```
+
+Each checkpoint represents a major development stage of the project.
+
+---
+
+# Git Commands
+
+Initialize the repository:
+
+```bash
+git init
+```
+
+Create the main branch:
+
+```bash
+git branch -M main
+```
+
+Add the repository:
+
+```bash
+git remote add origin https://github.com/conqquest/Devops_mse1.git
+```
+
+Add changes:
+
+```bash
+git add .
+```
+
+Commit:
+
+```bash
+git commit -m "checkpoint: description"
+```
+
+Push:
+
+```bash
+git push -u origin main
+```
+
+---
+
+# Files Not Committed
+
+The following files are ignored because they contain generated files, local dependencies, environment configuration or Terraform state:
+
+```text
+node_modules/
+dist/
+build/
+.env
+*.log
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfplan
+.vscode/
+.idea/
+.DS_Store
+```
+
+The Terraform lock file should remain committed:
+
+```text
+terraform/.terraform.lock.hcl
+```
+
+---
+
+# Project Status
+
+The frontend and backend have been developed and containerized.
+
+The Terraform infrastructure includes the core AWS networking, security, compute, database and monitoring configuration.
+
+Development and production environments are managed through Terraform Workspaces with separate environment-specific variable files.
+
+The remaining deployment expansion can include Amazon ECR, Application Load Balancer and automated deployment of the Docker containers to AWS.
+
+---
+
+## Repository
+
+**https://github.com/conqquest/Devops_mse1**
