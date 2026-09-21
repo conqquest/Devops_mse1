@@ -1,4 +1,4 @@
-# 🎵 VibePass — Concert & Music Festival Ticket Platform
+#  VibePass — Concert & Music Festival Ticket Platform
 
 > A full-stack concert discovery and ticket booking prototype, built as the application workload for a **Multi-Environment AWS Provisioning** university MSE project using Terraform.
 
